@@ -1,0 +1,101 @@
+plugins {
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.dagger.hilt.android)
+}
+
+android {
+    namespace = "com.example.movie app"
+    compileSdk = 34
+
+    defaultConfig {
+        applicationId = "com.example.movie app"
+        minSdk = 24
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary = true
+        }
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+
+    buildFeatures {
+        viewBinding = true
+        dataBinding = true
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+
+    buildTypes.onEach { it->
+        val MovieDBApiToken="a732b75424ddc70bc2070ad7ef109b39"
+        it.buildConfigField("String", "MOVIE_DB_API_TOKEN", MovieDBApiToken )
+    }
+}
+
+
+dependencies {
+
+    implementation(libs.core.ktx)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.activity.compose)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.ui)
+    implementation(libs.ui.graphics)
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.material3)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.ui.test.junit4)
+    debugImplementation(libs.ui.tooling)
+    debugImplementation(libs.ui.test.manifest)
+
+    //retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.retrofit.converter.scalars)
+    implementation(libs.okhttp.loggingInterceptor)
+    implementation(libs.preference.ktx)
+    implementation(libs.legacy.support.v4)
+
+    //room
+    implementation(libs.room.runtime)
+    implementation(libs.room.compiler)
+
+    //Dager Hilt
+    implementation(libs.dagger.hilt.android)
+    implementation(libs.dagger.hilt.android.compiler)
+    implementation(libs.dagger.hilt.lifecycle)
+    implementation(libs.dagger.hilt.compiler)
+
+    implementation("com.google.code.gson:gson:2.8.9")
+}
